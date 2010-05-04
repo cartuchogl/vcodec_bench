@@ -1,0 +1,18 @@
+Name: vcodec_bench
+  Quality, time encondig and filesize comparation of video codecs
+  with ffmpeg and ruby
+
+License:
+  GPLv3.
+
+Version:
+  0.1
+
+Copyright:
+  Copyright (c) 2010 [Carlos Bolaños](http://urbin.es).
+
+Dependencies:
+  - ruby
+  - RMagick
+  - ffmpeg (with libtheora and libx264)
+

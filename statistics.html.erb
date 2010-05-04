@@ -1,0 +1,76 @@
+<%#
+This file is part of vcodec_bench.
+
+vcodec_bench is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+EseaTetris is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with EseaTetris. If not, see <http://www.gnu.org/licenses/>.
+%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <title>Video codec benchmark(data results)</title>
+    <link rel="stylesheet" href="master.css" type="text/css" media="screen" title="default" charset="utf-8"/>
+    <script src="mootools.js" type="text/javascript" charset="utf-8"></script>
+    <script src="moobargraph.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" charset="utf-8">
+    
+      var gdata = [[
+      <%= @bitrates.map{|y| '[['+@codecs.map{|k| "%.6f" % @results[k][y][:diff][0] }.join(',')+"],'#{y}']"}.join(',') %>
+      ],[
+      <%= @bitrates.map{|y| '[['+@codecs.map{|k| "%.6f" % (@results[k][y][:diff][1]*1000) }.join(',')+"],'#{y}']"}.join(',') %>
+      ],[
+      <%= @bitrates.map{|y| '[['+@codecs.map{|k| "%.6f" % @results[k][y][:diff][2] }.join(',')+"],'#{y}']"}.join(',') %>
+      ],[
+      <%= @bitrates.map{|y| '[['+@codecs.map{|k| "%.1f" % @results[k][y][:trans_time] }.join(',')+"],'#{y}']"}.join(',') %>
+      ],[
+      <%= @bitrates.map{|y| '[['+@codecs.map{|k| @results[k][y][:filesize]/1024 }.join(',')+"],'#{y}']"}.join(',') %>
+      ]];
+      
+      window.addEvent('domready', function() {
+          var gcolors = ['#900','#090','#009'];
+          var gwidth = 650;
+          for(var c=0;c<5;c++) {
+            new mooBarGraph({
+              container: $('myGraph'+(c+1)),
+              data: gdata[c],
+              colors:gcolors,
+              width:gwidth
+            });
+          }
+      });
+
+    </script>
+  </head>
+  <body id="main">
+    <h2>
+      Quality 
+      <small>
+        <a href="http://www.imagemagick.org/RMagick/doc/image1.html#difference">
+          Magick::Image.difference
+        </a> method
+      </small>
+    </h2>
+    <h3>mean error per pixel</h3>
+    <div id="myGraph1"></div>
+    <h3>normalized mean error(*10^3)</h3>
+    <div id="myGraph2"></div>
+    <h3>normalized maximum error</h3>
+    <div id="myGraph3"></div>
+    <hr/>
+    <h2>Encoding time (sg)</h2>
+    <div id="myGraph4"></div>
+    <h2>Filesize (k)</h2>
+    <div id="myGraph5"></div>
+  </body>
+</html>
