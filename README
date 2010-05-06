@@ -16,3 +16,7 @@ Dependencies:
   - RMagick
   - ffmpeg (with libtheora and libx264)
 
+Use:
+  ruby -rubygems bateria_pruebas.rb
+  Need input.vob file video input
+
