@@ -30,7 +30,8 @@ class Prueba
       :theora => 'ogv',
       :h264   => 'mp4',
       :xvid   => 'avi',
-      :flv    => 'flv'
+      :flv    => 'flv',
+      :vpx    => 'webm'
     }
     @results = {}
     transcode
@@ -57,7 +58,8 @@ class Prueba
       :theora => ['libtheora','libtheora'],
       :h264   => ['libx264 -vpre slow_firstpass','libx264 -vpre slow'],
       :xvid   => ['libxvid','libxvid'],
-      :flv    => ['flv','flv']
+      :flv    => ['flv','flv'],
+      :vpx    => ['libvpx_vp8','libvpx_vp8']
     }[codec]
   end
   # for i in {1200..2200}; do mv `printf "big_buck_bunny_%05d.png big_buck_bunny_%05d.png" "$i" "$((i-1200))"`; done
@@ -69,7 +71,7 @@ class Prueba
         cmd = "ffmpeg -y -i #{input} -an -pass 1 -vcodec #{ffmpeg_codec(c).first} -b #{b} -bt #{b} -threads 0 #{ffextra} #{input_name}.#{b}.#{ext(c)}"
         puts cmd
         `#{cmd}`
-        cmd = "ffmpeg -y -i #{input} -an -pass 2 -vcodec #{ffmpeg_codec(c).first} -b #{b} -bt #{b} -threads 0 #{ffextra} #{input_name}.#{b}.#{ext(c)}"
+        cmd = "ffmpeg -y -i #{input} -an -pass 2 -vcodec #{ffmpeg_codec(c).last} -b #{b} -bt #{b} -threads 0 #{ffextra} #{input_name}.#{b}.#{ext(c)}"
         `#{cmd}`
         end_time = Time.now
         puts "#{c} at #{b} in"
@@ -123,7 +125,7 @@ end
 
 prueba = Prueba.new
 prueba.input = 'input.vob'
-prueba.codecs = [:h264,:theora]
+prueba.codecs = [:theora,:h264,:vpx]
 prueba.bitrates = ['1024k','768k','512k','384k','256k']
 prueba.run
 
